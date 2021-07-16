@@ -46,38 +46,7 @@ function ProfileRelationsBox(propriedades) {
 
 export default function Home() {
   const usuarioAleatorio = 'sleiph';
-  const [comunidades, setComunidades] = React.useState([
-    {
-      id: '12802378123789378912789789123896123', 
-      title: 'Queremos Yakult 2 litros',
-      image: 'https://img10.orkut.br.com/community/543e2091b6a00799f961b5560157011e.jpg'
-    },
-    {
-      id: '12802378123789378912789789123896124', 
-      title: 'Queria viver no mundo do...',
-      image: 'https://img10.orkut.br.com/community/9bbf0dbb8dead232856dfa4686c73f49.jpg'
-    },
-    {
-      id: '12802378123789378912789789123896125', 
-      title: 'Cell',
-      image: 'https://img10.orkut.br.com/community/9fda6d6c99c157f3c3d139977ea1e4e2.jpg'
-    },
-    {
-      id: '12802378123789378912789789123896126', 
-      title: 'Pica-Pau Doidão',
-      image: 'https://img10.orkut.br.com/community/b3bab9c0f4f7b2ae317009907078d79d.jpg'
-    },
-    {
-      id: '12802378123789378912789789123896127', 
-      title: 'Feios do metal',
-      image: 'https://img10.orkut.br.com/community/4ba107f3b98d52cc6805100fe18c9b1b.jpg'
-    },
-    {
-      id: '12802378123789378912789789123896128', 
-      title: 'TE INCOMODO? Que pena',
-      image: 'https://img10.orkut.br.com/community/69a4fbf0144b2167413d12775eda3bb4.jpg'
-    }
-]);
+  const [comunidades, setComunidades] = React.useState([]);
   const pessoasFavoritas = [
     'dan-correa',
     'Marcos311',
@@ -88,6 +57,7 @@ export default function Home() {
   ]
   const [seguidores, setSeguidores] = React.useState([]);
   React.useEffect(function() {
+    // GET
     fetch('https://api.github.com/users/peas/followers')
     .then(function (respostaDoServidor) {
       return respostaDoServidor.json();
@@ -95,6 +65,34 @@ export default function Home() {
     .then(function(respostaCompleta) {
       setSeguidores(respostaCompleta);
     })
+
+    // API GraphQL
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        'Authorization': '280873d65c023a36752fc893cc4cb8',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ "query": `query {
+        allCommunities {
+          id 
+          title
+          imageUrl
+          creatorSlug
+        }
+      }` })
+    })
+    .then((response) => response.json()) // Pega o retorno do response.json() e já retorna
+    .then((respostaCompleta) => {
+      const comunidadesVindasDoDato = respostaCompleta.data.allCommunities;
+      console.log(comunidadesVindasDoDato)
+      setComunidades(comunidadesVindasDoDato)
+    })
+    // .then(function (response) {
+    //   return response.json()
+    // })
+
   }, [])
 
   return (
@@ -126,10 +124,25 @@ export default function Home() {
                 const comunidade = {
                   id: new Date().toISOString(),
                   title: dadosDoForm.get('title'),
-                  image: dadosDoForm.get('image'),
+                  imageUrl: dadosDoForm.get('image'),
+                  creatorSlug: usuarioAleatorio
                 }
-                const comunidadesAtualizadas = [...comunidades, comunidade];
-                setComunidades(comunidadesAtualizadas)
+
+                fetch('/api/comunidades', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(comunidade)
+                })
+                .then(async (response) => {
+                  const dados = await response.json();
+                  console.log(dados.registroCriado);
+                  const comunidade = dados.registroCriado;
+                  const comunidadesAtualizadas = [...comunidades, comunidade];
+                  setComunidades(comunidadesAtualizadas)
+                })
+
             }}>
               <div>
                 <input
@@ -163,8 +176,8 @@ export default function Home() {
               {comunidades.map((itemAtual) => {
                 return (
                   <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`}>
-                      <img src={itemAtual.image} />
+                    <a href={`/communities/${itemAtual.id}`}>
+                      <img src={itemAtual.imageUrl} />
                       <span>{itemAtual.title}</span>
                     </a>
                   </li>
