@@ -38,7 +38,7 @@ export function AlurakutMenu({ githubUser }) {
             Sair
           </a>
           <div>
-            <input placeholder="Pesquisar no Orkut" />
+            <input style={{backgroundColor: "#5c3c5f"}} placeholder="Pesquisar no Alurakut" />
           </div>
         </nav>
 
@@ -53,7 +53,7 @@ export function AlurakutMenu({ githubUser }) {
 }
 AlurakutMenu.Wrapper = styled.header`
   width: 100%;
-  background-color: #308BC5;
+  background-color: #89598e;
   .alurakutMenuProfileSidebar {
     background: white;
     position: fixed;
@@ -79,7 +79,7 @@ AlurakutMenu.Wrapper = styled.header`
     }
     .boxLink {
       font-size: 18px;
-      color: #2E7BB4;
+      color: #5c3c5f;
       -webkit-text-decoration: none;
       text-decoration: none;
       font-weight: 800;
@@ -88,11 +88,11 @@ AlurakutMenu.Wrapper = styled.header`
       margin-top: 12px;
       margin-bottom: 8px;
       border-color: transparent;
-      border-bottom-color: #ECF2FA;
+      border-bottom-color: #5c3c5f;
     }
   }
   .container {
-    background-color: #308BC5;
+    background-color: #89598e;
     padding: 7px 16px;
     max-width: 1110px;
     margin: auto;
@@ -125,7 +125,7 @@ AlurakutMenu.Wrapper = styled.header`
         text-decoration: none;
         &:after {
           content: " ";
-          background-color: #5292C1;
+          background-color: #5c3c5f;
           display: block;
           position: absolute;
           width: 1px;
@@ -221,7 +221,7 @@ export function AlurakutProfileSidebarMenuDefault() {
 AlurakutProfileSidebarMenuDefault.Wrapper = styled.div`
   a {
     font-size: 12px;
-    color: #2E7BB4;
+    color: #5c3c5f;
     margin-bottom: 16px;
     display: flex;
     align-items: center;

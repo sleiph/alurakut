@@ -11,13 +11,11 @@ export default async function recebedorDeRequests(request, response) {
             ...request.body,
         })
     
-        console.log(registroCriado);
-    
         response.json({
             dados: 'Algum dado qualquer',
             registroCriado: registroCriado,
         })
-        return;
+        return
     }
 
     response.status(404).json({

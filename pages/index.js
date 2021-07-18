@@ -31,16 +31,16 @@ function ProfileRelationsBox(propriedades) {
         {propriedades.title} ({propriedades.items.length})
       </h2>
       <ul>
-        {/* {seguidores.map((itemAtual) => {
+        { propriedades.items.slice(0, 6).map((itemAtual) => {
           return (
-            <li key={itemAtual}>
-              <a href={`https://github.com/${itemAtual}.png`}>
-                <img src={itemAtual.image} />
-                <span>{itemAtual.title}</span>
+            <li key={itemAtual.id}>
+              <a href={itemAtual.html_url}>
+                <img src={ itemAtual.avatar_url } />
+                <span>{itemAtual.login}</span>
               </a>
             </li>
           )
-        })} */}
+        })}
       </ul>
     </ProfileRelationsBoxWrapper>
   )
@@ -49,25 +49,17 @@ function ProfileRelationsBox(propriedades) {
 export default function Home(props) {
   const usuarioAleatorio = props.githubUser;
   const [comunidades, setComunidades] = React.useState([]);
-  const pessoasFavoritas = [
-    'dan-correa',
-    'Marcos311',
-    'mexerica',
-    'vitor-santos430',
-    'TaylanPeixoto',
-    'kvitravn'
-  ]
   const [seguidores, setSeguidores] = React.useState([]);
   React.useEffect(function() {
     // GET
-    fetch('https://api.github.com/users/peas/followers')
+    fetch("https://api.github.com/users/sleiph/followers")
     .then(function (respostaDoServidor) {
       return respostaDoServidor.json();
     })
     .then(function(respostaCompleta) {
-      setSeguidores(respostaCompleta);
+      setSeguidores(respostaCompleta)
     })
-
+    
     // API GraphQL
     fetch('https://graphql.datocms.com/', {
       method: 'POST',
@@ -87,8 +79,7 @@ export default function Home(props) {
     })
     .then((response) => response.json()) // Pega o retorno do response.json() e já retorna
     .then((respostaCompleta) => {
-      const comunidadesVindasDoDato = respostaCompleta.data.allCommunities;
-      console.log(comunidadesVindasDoDato)
+      const comunidadesVindasDoDato = respostaCompleta.data.allCommunities
       setComunidades(comunidadesVindasDoDato)
     })
     // .then(function (response) {
@@ -118,10 +109,7 @@ export default function Home(props) {
             <h2 className="subTitle">O que você deseja fazer?</h2>
             <form onSubmit={function handleCriaComunidade(e) {
                 e.preventDefault();
-                const dadosDoForm = new FormData(e.target);
-
-                console.log('Campo: ', dadosDoForm.get('title'));
-                console.log('Campo: ', dadosDoForm.get('image'));
+                const dadosDoForm = new FormData(e.target)
 
                 const comunidade = {
                   id: new Date().toISOString(),
@@ -138,10 +126,9 @@ export default function Home(props) {
                   body: JSON.stringify(comunidade)
                 })
                 .then(async (response) => {
-                  const dados = await response.json();
-                  console.log(dados.registroCriado);
-                  const comunidade = dados.registroCriado;
-                  const comunidadesAtualizadas = [...comunidades, comunidade];
+                  const dados = await response.json()
+                  const comunidade = dados.registroCriado
+                  const comunidadesAtualizadas = [...comunidades, comunidade]
                   setComunidades(comunidadesAtualizadas)
                 })
 
@@ -187,24 +174,7 @@ export default function Home(props) {
               })}
             </ul>
           </ProfileRelationsBoxWrapper>
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Pessoas da comunidade ({pessoasFavoritas.length})
-            </h2>
-
-            <ul>
-              {pessoasFavoritas.map((itemAtual) => {
-                return (
-                  <li key={itemAtual}>
-                    <a href={`/users/${itemAtual}`}>
-                      <img src={`https://github.com/${itemAtual}.png`} />
-                      <span>{itemAtual}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          
         </div>
       </MainGrid>
     </>
