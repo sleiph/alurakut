@@ -5,7 +5,7 @@ import nookies from 'nookies';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const [githubUser, setGithubUser] = React.useState('omariosouto');
+  const [githubUser, setGithubUser] = React.useState('sleiph');
 
   return (
     <main style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -19,7 +19,7 @@ export default function LoginScreen() {
         </section>
 
         <section className="formArea">
-          <form className="box" onSubmit={(infosDoEvento) => {
+          <form className="box" style={{backgroundColor: "#89598e"}} onSubmit={(infosDoEvento) => {
                 infosDoEvento.preventDefault()
                 fetch('https://alurakut.vercel.app/api/login', {
                     method: 'POST',
@@ -52,12 +52,12 @@ export default function LoginScreen() {
                 ? 'Preencha o campo'
                 : ''
             }
-            <button type="submit">
+            <button style={{backgroundColor: "#5c3c5f"}} type="submit">
               Login
             </button>
           </form>
 
-          <footer className="box">
+          <footer style={{backgroundColor: "white"}} className="box">
             <p>
               Ainda não é membro? <br />
               <a href="/login">
@@ -69,7 +69,7 @@ export default function LoginScreen() {
           </footer>
         </section>
 
-        <footer className="footerArea">
+        <footer style={{backgroundColor: "#89598e"}} className="footerArea">
           <p>
             © 2021 alura.com.br - <a href="/">Sobre o Orkut.br</a> - <a href="/">Centro de segurança</a> - <a href="/">Privacidade</a> - <a href="/">Termos</a> - <a href="/">Contato</a>
           </p>

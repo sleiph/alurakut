@@ -52,7 +52,7 @@ export default function Home(props) {
   const [seguidores, setSeguidores] = React.useState([]);
   React.useEffect(function() {
     // GET
-    fetch("https://api.github.com/users/sleiph/followers")
+    fetch(`https://api.github.com/users/${props.githubUser}/followers`)
     .then(function (respostaDoServidor) {
       return respostaDoServidor.json();
     })
